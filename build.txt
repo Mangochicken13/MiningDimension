@@ -1,0 +1,4 @@
+displayName = Mining Dimension
+author = Mangochicken
+version = 0.1
+modReferences = SubworldLibrary

@@ -1,0 +1,11 @@
+Items: {
+	PreHardmodeSubworldEntranceItem: {
+		DisplayName: Pre Hardmode Subworld Entrance Item
+		Tooltip: ""
+	}
+
+	DrillevatorItem: {
+		DisplayName: Drillevator Item
+		Tooltip: ""
+	}
+}
