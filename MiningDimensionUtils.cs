@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Terraria.WorldBuilding;
 
 namespace MiningDimension
 {
@@ -13,24 +11,24 @@ namespace MiningDimension
     {
         public static void InitializeOreTiers(Dictionary<int, int> OreTiers, int subworldIndex)
         {
-            OreTiers.Clear();
+            OreTiers.Clear(); // Make sure ores don't generate in subworlds that shouldn't have them
 
-            int amount = (int)(Main.maxTilesY * Main.maxTilesX * 0.00019);
+            int amount = (int)(Main.maxTilesY * Main.maxTilesX * 0.00019); // magic number here, 
 
-            switch (subworldIndex)
+            switch (subworldIndex) // only PreBoss and EvilOres have subworlds assigned to them as of now.
             {
                 case MiningSubworldID.PreBoss: // preboss ores, copper -> gold tiers
-                    Main.NewText("pre hardmode ores");
+                    Main.NewText("pre hardmode ores"); // The text here is just for debugging, to make sure the right subworld was entered
                     AddPreHardmodeOres(OreTiers, amount);
                     break;
                 case MiningSubworldID.EvilOres: // also adds demonite + crimtane
                     Main.NewText("evil ores");
-                    AddPreHardmodeOres(OreTiers, (int)(amount * 0.95f));
+                    AddPreHardmodeOres(OreTiers, (int)(amount * 0.95f)); // slightly reducing the frequency or 
                     AddPreWoFOres(OreTiers, amount);
                     break;
                 case MiningSubworldID.Hardmode: // also does cobalt -> titanium (both types)
                     Main.NewText("pre mech ores");
-                    AddPreHardmodeOres(OreTiers, (int)(amount * 0.95f));
+                    AddPreHardmodeOres(OreTiers, (int)(amount * 0.9f));
                     AddPreWoFOres(OreTiers, amount);
                     AddHardmodeOres(OreTiers, amount);
                     break;
@@ -40,7 +38,7 @@ namespace MiningDimension
                     break;
                 case MiningSubworldID.Hell: // Only does hell, same as above here too
                     break;
-                case MiningSubworldID.Luminite: // Luminite ore gen, post moonlord, do something fancy here.
+                case MiningSubworldID.Luminite: // Luminite ore gen, post moonlord, do something fancy here. (maybe similar to clam planetoids or 
                     Main.NewText("Luminite ore");
                     AddLuminite(OreTiers, amount);
                     break;
@@ -48,6 +46,8 @@ namespace MiningDimension
             }
         }
 
+        // These blocks are pretty simple, just adding the ores to the dictionary
+        // The base amount can be changed to whatever feels right, either in the method call or in the method itself
         public static void AddPreHardmodeOres(Dictionary<int, int> OreTiers, int amount)
         {
             OreTiers.Add(TileID.Copper, amount);
@@ -85,7 +85,8 @@ namespace MiningDimension
             OreTiers.Add(TileID.LunarOre, (int)(amount * 0.2f));
         }
     }
-    public static class TileUtils
+
+    public static class TileUtils // Copied from a wiki, used for the drill (temp sprite) tile entity
     {
         /// <summary>
         /// Atttempts to find the top-left corner of a multitile at location (<paramref name="x"/>, <paramref name="y"/>)
@@ -147,6 +148,8 @@ namespace MiningDimension
     {
         public static string GetPrefixName(int prefixId)
         {
+            if (prefixId == 0)
+                return "none";
             return PrefixLoader.GetPrefix(prefixId)?.Name ?? PrefixID.Search.GetName(prefixId);
         }
     }

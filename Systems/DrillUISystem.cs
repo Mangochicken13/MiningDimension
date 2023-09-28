@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
+﻿using Microsoft.Xna.Framework;
 using MiningDimension.UI;
-using Terraria.UI;
+using System.Collections.Generic;
 using Terraria;
-using Microsoft.Xna.Framework;
+using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace MiningDimension.Systems
 {
+    // A lot of this is magic wizardry to me, Majority is copied from the advanced UI wiki
     public class DrillUISystem : ModSystem
     {
         internal UserInterface DrillInterface;

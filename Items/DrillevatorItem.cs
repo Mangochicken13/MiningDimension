@@ -5,6 +5,7 @@ namespace MiningDimension.Items
 {
     public class DrillevatorItem : ModItem
     {
+        // Sprite isn't done yet, intention is some sort of placeable drill.
         public override void SetDefaults()
         {
             Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.DrillevatorTile>());

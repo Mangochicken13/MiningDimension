@@ -1,10 +1,11 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.Localization;
 using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace MiningDimension.Systems
 {
+    // Simple enough concept here, just adding recipe groups so a player can use any combination of ores to craft
     public class RecipeGroups : ModSystem
     {
         public override void AddRecipeGroups()
@@ -12,7 +13,7 @@ namespace MiningDimension.Systems
             // Copper || Tin
             RecipeGroup group = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.CopperBar)}", ItemID.CopperBar, ItemID.TinBar);
             RecipeGroup.RegisterGroup(nameof(ItemID.CopperBar), group);
-            
+
             // Silver || Tungsten
             group = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.SilverBar)}", ItemID.SilverBar, ItemID.TungstenBar);
             RecipeGroup.RegisterGroup(nameof(ItemID.SilverBar), group);

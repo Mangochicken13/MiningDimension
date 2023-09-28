@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace MiningDimension.Players
 {
     public class ItemRetainer : ModPlayer
     {
+        // Items can be lost when entering a subworld, due to the UI requiring the inventory to be open
+        // and how UI can be clicked through unless you do some complicated shenanigans
         public Item ItemToRetain = null;
 
         public override void OnEnterWorld()

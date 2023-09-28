@@ -1,9 +1,7 @@
-﻿using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
-using System;
 
 namespace MiningDimension
 {
@@ -24,7 +22,7 @@ namespace MiningDimension
         {
             Dust.QuickBox(new Vector2(x, y) * 16, new Vector2(x + 1, y + 1) * 16, 2, Color.YellowGreen, null);
 
-            // Code to test placed here:
+            // Code to test placed here: Chuck whatever you want here, it won't be present in a full release anyway
             //WorldGen.Caverer(x, y);
 
             //WorldGen.digTunnel(x, y, 2 * (Random.Shared.NextDouble() - 0.5), 2 * (Random.Shared.NextDouble() - 0.5), 25, 3);

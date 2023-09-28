@@ -1,11 +1,6 @@
 ﻿using MiningDimension.WorldGenPasses;
 using SubworldLibrary;
-using System;
 using System.Collections.Generic;
-using Terraria;
-using Terraria.GameContent.Generation;
-using Terraria.ID;
-using Terraria.IO;
 using Terraria.WorldBuilding;
 
 namespace MiningDimension.Subworlds

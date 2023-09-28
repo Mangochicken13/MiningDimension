@@ -1,29 +1,28 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.IO;
-using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
 namespace MiningDimension.WorldGenPasses
 {
-    // Probably combine a lot of these into one pass, chcek if that's an appropriate choice
+    // This is an unreadable mess, hopefully the class names are descriptive enough
+
+    // Probably combine a lot of these into one pass, check if that's an appropriate choice
+    // One of the important parts here is the use of System.Random.Shared.Next() over Main.rand.Next() or WorldGen.genRand.Next()
+    // The latter two would give consistent results between entering and exiting subworlds
     public class BaseDirtPass : GenPass
     {
-        // Gen Passes are made using this syntax,
-        // the string is the name used interally to call it
-        // the number is the weight applied to it (presumably how much of the world gen bar it takes up)
         public BaseDirtPass() : base("Terrain_Dirt", 1) { }
 
         protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
         {
             // copied from subworld library wiki example
             progress.Message = "Generating terrain";
-            Main.worldSurface = 0; 
+            Main.worldSurface = 0;
             Main.rockLayer = Main.maxTilesY / 3;
-            
+
             // TODO: Try and remove the space layer, or push it above the world at least.
 
             Main.spawnTileX = Main.maxTilesX / 2 + Main.rand.Next(-50, 50);
@@ -81,7 +80,7 @@ namespace MiningDimension.WorldGenPasses
             // y = 400 -> 720
             yRangeOld = yRange; // Get the previous value, should be 400
             yRange = (int)(Main.maxTilesY * (9 / 15f)); // get a new value, should come to 600 for this mod.
-            patches = (int)(Main.maxTilesX * yRange * 0.017);  
+            patches = (int)(Main.maxTilesX * yRange * 0.017);
 
             for (; i < patches; i++)
             {
@@ -117,14 +116,13 @@ namespace MiningDimension.WorldGenPasses
 
             //int MediumCaves = (int)(Main.maxTilesX * Main.maxTilesY * 0.0003);
             int MediumCaves = (int)(Main.maxTilesX * Main.maxTilesY * 0.0002);
-            
+
             for (int i = 0, j = 0; i < MediumCaves;)
             {
-                progress.Set(i / MediumCaves);
-
                 int x = Random.Shared.Next(0, Main.maxTilesX);
                 int y = Random.Shared.Next(0, Main.maxTilesY);
 
+                // Only continue if the selected tile isn't air
                 if (!Main.tile[x, y].HasTile && j < 500)
                 {
                     j++;
@@ -133,6 +131,7 @@ namespace MiningDimension.WorldGenPasses
 
                 // Note to Self: Try to make your own cave methods, for different shaped variants
                 WorldGen.Caverer(x, y);
+                progress.Set(i / MediumCaves);
 
                 j = 0;
                 i++;
@@ -140,6 +139,7 @@ namespace MiningDimension.WorldGenPasses
 
             for (int x = 0; x < Main.maxTilesX; x++)
             {
+                // Remove all liquid. Change this in future to generate some areas of liquid and settle it
                 for (int y = 0; y < Main.maxTilesY; y++)
                 {
                     Main.tile[x, y].LiquidAmount = 0;
@@ -163,7 +163,7 @@ namespace MiningDimension.WorldGenPasses
         protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Generating Ores";
-            OreTiers = new Dictionary<int, int>();
+            OreTiers = new Dictionary<int, int>(); // Make sure the dictionary isn't null before using
             MiningDimensionUtils.InitializeOreTiers(OreTiers, SubworldIndex);
 
             foreach (var pair in OreTiers)

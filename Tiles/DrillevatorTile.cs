@@ -1,17 +1,20 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ObjectData;
-using Microsoft.Xna.Framework;
-using Terraria.Localization;
-using SubworldLibrary;
-using MiningDimension.Subworlds;
+﻿using Microsoft.Xna.Framework;
+using MiningDimension.Systems;
+using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Audio;
-using MiningDimension.Systems;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.ObjectData;
 
 namespace MiningDimension.Tiles
 {
+    // There is an intention to have an "inventory" of sorts attached to the tile
+    // The plan for entering subworlds is to have the player craft "Drives" out of the ores present in that subworld
+    // The player would then put the drive into a designated slot, and that would allow them to enter the respective subworld
+    // I'm not entirely sure about a plan to require previous drives to craft higher tier ones, but simultaneously allow entering the previous subworlds.
+    // That's a problem for another day though (just like the inventory itself)
     public class DrillevatorTile : ModTile
     {
         public override void SetStaticDefaults()
@@ -38,14 +41,15 @@ namespace MiningDimension.Tiles
 
         public override bool RightClick(int i, int j)
         {
-            // Example mod code
-            // Note to self: Check that this works properly, 
+            // Example mod code. Copied comments denoted with a " - Comment"
+            // Note to self: Check that this works properly
+
             Player player = Main.LocalPlayer;
 
-            // Should your tile entity bring up a UI, this line is useful to prevent item slots from misbehaving
+            // - Should your tile entity bring up a UI, this line is useful to prevent item slots from misbehaving
             Main.mouseRightRelease = false;
 
-            // The following four (4) if-blocks are recommended to be used if your multitile opens a UI when right clicked:
+            // - The following four (4) if-blocks are recommended to be used if your multitile opens a UI when right clicked:
             if (player.sign > -1)
             {
                 SoundEngine.PlaySound(SoundID.MenuClose);
@@ -53,6 +57,7 @@ namespace MiningDimension.Tiles
                 Main.editSign = false;
                 Main.npcChatText = string.Empty;
             }
+
             if (Main.editChest)
             {
                 SoundEngine.PlaySound(SoundID.MenuTick);
@@ -64,6 +69,7 @@ namespace MiningDimension.Tiles
                 NetMessage.SendData(MessageID.SyncPlayerChest, -1, -1, NetworkText.FromLiteral(Main.chest[player.chest].name), player.chest, 1f);
                 player.editedChestName = false;
             }
+
             if (player.talkNPC > -1)
             {
                 player.SetTalkNPC(-1);
@@ -73,10 +79,10 @@ namespace MiningDimension.Tiles
 
             if (TileUtils.TryGetTileEntityAs(i, j, out TileEntity entity))
             {
-                
-                // Do things to your entity here
+
+                // Do things to your entity here - example code
             }
-            
+
             Main.playerInventory = true;
             ModContent.GetInstance<DrillUISystem>().ShowMyUI();
 
@@ -104,7 +110,7 @@ namespace MiningDimension.Tiles
                 NetMessage.SendData(MessageID.TileEntityPlacement, number: i, number2: j, number3: type);
             }
 
-            Point16 tileOrigin = new Point16(1, 1);
+            Point16 tileOrigin = new(1, 1);
             int placedEntity = Place(i - tileOrigin.X, j - tileOrigin.Y);
             return placedEntity;
         }

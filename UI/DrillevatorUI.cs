@@ -1,16 +1,11 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using MiningDimension.Players;
+using MiningDimension.Subworlds;
+using SubworldLibrary;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Terraria.GameContent;
-using SubworldLibrary;
-using MiningDimension.Subworlds;
-using Terraria.ModLoader.UI;
-using Terraria.ID;
-using System;
-using MiningDimension.Players;
 
 namespace MiningDimension.UI
 {
@@ -130,7 +125,7 @@ namespace MiningDimension.UI
         {
             _uiPanel = new UIPanel();
             _uiPanel.Width = StyleDimension.Fill; // Makes the panel as large as the constructed element
-            _uiPanel.Height = StyleDimension.Fill; 
+            _uiPanel.Height = StyleDimension.Fill;
             Append(_uiPanel);
 
             _uiText = new UIText("");
