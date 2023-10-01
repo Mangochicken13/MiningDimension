@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using MiningDimension.Systems;
+using MiningDimension.UI;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -84,7 +84,7 @@ namespace MiningDimension.Tiles
             }
 
             Main.playerInventory = true;
-            ModContent.GetInstance<DrillUISystem>().ShowMyUI();
+            ModContent.GetInstance<DrillUISystem>().ShowSelectionUI();
 
             return true;
         }

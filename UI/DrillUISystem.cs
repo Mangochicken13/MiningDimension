@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using MiningDimension.UI;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace MiningDimension.Systems
+namespace MiningDimension.UI
 {
     // A lot of this is magic wizardry to me, Majority is copied from the advanced UI wiki
     public class DrillUISystem : ModSystem
@@ -13,6 +12,24 @@ namespace MiningDimension.Systems
         internal UserInterface DrillInterface;
 
         internal DrillevatorUI DrillUI;
+
+        internal ConfirmationUI ConfirmEnterUI;
+
+        // this may have unintended side effects, make sure to test all the ui layers in here to make sure they don't break
+        const string vanillaText = "Vanilla: ";
+        private static readonly string[] vanillaLayers = new string[]
+        {
+            vanillaText + "Laser Ruler",
+            vanillaText + "Ruler",
+            vanillaText + "Fancy UI",
+            vanillaText + "Map / Minimap",
+            vanillaText + "Inventory",
+            vanillaText + "Info Accessories Bar",
+            vanillaText + "Builder Accessories Bar",
+            vanillaText + "Resource Bars",
+            vanillaText + "Hotbar",
+            vanillaText + "Player Chat"
+        };
 
         private GameTime _lastUpdateUiGameTime;
 
@@ -32,6 +49,8 @@ namespace MiningDimension.Systems
                 DrillInterface = new UserInterface();
 
                 DrillUI = new DrillevatorUI();
+
+                ConfirmEnterUI = new ConfirmationUI();
             }
             base.Load();
         }
@@ -53,18 +72,35 @@ namespace MiningDimension.Systems
                     },
                     InterfaceScaleType.UI));
             }
+
+            if (DrillInterface?.CurrentState == ConfirmEnterUI)
+            {
+                for (int i = 0; i < vanillaLayers.Length; i++)
+                {
+                    int layer = layers.FindIndex(layer => layer.Name.Equals(vanillaLayers[i]));
+                    if (layer != -1)
+                    {
+                        layers.RemoveAt(layer);
+                    }
+                }
+            }
         }
 
         public override void PostUpdatePlayers()
         {
-            if ((!Main.playerInventory) && DrillInterface?.CurrentState != null)
+            if (!Main.playerInventory && DrillInterface?.CurrentState == DrillUI)
                 ModContent.GetInstance<DrillUISystem>().HideMyUI();
         }
 
-        internal void ShowMyUI()
+        internal void ShowSelectionUI()
         {
             DrillInterface?.SetState(DrillUI);
-            Main.NewText("Ui shown");
+        }
+
+        internal void ShowConfirmationUI(int id)
+        {
+            DrillInterface?.SetState(ConfirmEnterUI);
+            ConfirmEnterUI.SubworldToEnter = id;
         }
 
         internal void HideMyUI()

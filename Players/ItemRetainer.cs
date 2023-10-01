@@ -3,6 +3,7 @@ using Terraria.ModLoader;
 
 namespace MiningDimension.Players
 {
+    // Currently unused, will remain in case a config is added later
     public class ItemRetainer : ModPlayer
     {
         // Items can be lost when entering a subworld, due to the UI requiring the inventory to be open

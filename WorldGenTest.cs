@@ -18,7 +18,9 @@ namespace MiningDimension
                 TestMethod(Main.MouseWorld.ToTileCoordinates().X, Main.MouseWorld.ToTileCoordinates().Y);
         }
 
+#pragma warning disable CA1822 // Mark members as static
         private void TestMethod(int x, int y)
+#pragma warning restore CA1822 // Mark members as static
         {
             Dust.QuickBox(new Vector2(x, y) * 16, new Vector2(x + 1, y + 1) * 16, 2, Color.YellowGreen, null);
 

@@ -11,37 +11,35 @@ namespace MiningDimension.UI
 {
     public class DrillevatorUI : UIState
     {
-        public bool EnteringSubworld = false;
-        public int SubworldToEnter = 0;
-
+        UIPanel panel;
         // TODO: Sort this whole block out so it isnt massive as hell
         public override void OnInitialize()
         {
-            UIPanel panel = new UIPanel();
+            panel = new();
             panel.Width.Set(800, 0);
             panel.Height.Set(600, 0);
             panel.VAlign = panel.HAlign = 0.5f;
             Append(panel);
 
-            UIText normalOreHeader = new UIText("Normal Ores");
-            normalOreHeader.HAlign = 0.25f;  // 1
+            UIText normalOreHeader = new("Normal Ores");
+            normalOreHeader.HAlign = 0.25f; // 1
             normalOreHeader.Top.Set(15, 0); // 2
             panel.Append(normalOreHeader);
 
-            UIText biomeOreHeader = new UIText("Biome specific Ores");
+            UIText biomeOreHeader = new("Biome specific Ores");
             biomeOreHeader.HAlign = 0.75f;
             biomeOreHeader.Top.Set(15, 0);
             panel.Append(biomeOreHeader);
 
 
-            UITravelButton travelButton1 = new UITravelButton("Descend", PreBossButtonClick);
+            UIButton travelButton1 = new UIButton("Descend", PreBossButtonClick);
             travelButton1.Width.Set(120, 0);
             travelButton1.Height.Set(40, 0);
             travelButton1.HAlign = 0.08f;
             travelButton1.Top.Set(0, 0.1f);
             panel.Append(travelButton1);
 
-            UITravelButton travelButton2 = new UITravelButton("Descend", EvilOreButtonClick);
+            UIButton travelButton2 = new UIButton("Descend", EvilOreButtonClick);
             travelButton2.Width.Set(120, 0);
             travelButton2.Height.Set(40, 0);
             travelButton2.HAlign = 0.08f;
@@ -52,56 +50,25 @@ namespace MiningDimension.UI
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if (ContainsPoint(Main.MouseScreen))
+            if (panel.ContainsPoint(Main.MouseScreen))
             {
                 Main.LocalPlayer.mouseInterface = true;
             }
-
-            if (EnteringSubworld)
-            {
-                EnteringSubworld = false;
-                switch (SubworldToEnter)
-                {
-                    case MiningSubworldID.PreBoss:
-                        SubworldSystem.Enter<PreBossSubworld>();
-                        break;
-                    case MiningSubworldID.EvilOres:
-                        SubworldSystem.Enter<EvilOresSubworld>();
-                        break;
-                    case (_):
-                        ModContent.GetInstance<MiningDimension>().Logger.Warn("Tried to enter an invalid subworld ID");
-                        break;
-                }
-            }
         }
 
-        // TODO: do some sort of check for the drves
+        // TODO: do some sort of check for the drives
         private void PreBossButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
-
-            var player = Main.LocalPlayer;
-            if (!player.inventory[58].IsAir)
-            {
-                var item = player.inventory[58];
-                player.GetModPlayer<ItemRetainer>().ItemToRetain = item;
-            }
-            UpdateVariables(MiningSubworldID.PreBoss);
+            ModContent.GetInstance<DrillUISystem>().ShowConfirmationUI(MiningSubworldID.PreBoss);
         }
 
         private void EvilOreButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
-            Main.LocalPlayer.mouseInterface = true;
-            SubworldSystem.Enter<EvilOresSubworld>();
-        }
-
-        private void UpdateVariables(int id)
-        {
-            EnteringSubworld = true;
-            SubworldToEnter = id;
+            ModContent.GetInstance<DrillUISystem>().ShowConfirmationUI(MiningSubworldID.EvilOres);
         }
     }
 
-    public class UITravelButton : UIElement
+    public class UIButton : UIElement
     {
         // Code borrowed (stolen) from the tMod wiki
         private object _text;
@@ -115,7 +82,7 @@ namespace MiningDimension.UI
             set => _text = value;
         }
 
-        public UITravelButton(object text, UIElement.MouseEvent clickAction) : base()
+        public UIButton(object text, UIElement.MouseEvent clickAction) : base()
         {
             _text = text?.ToString() ?? string.Empty; // assign text parameter to _text if not null, or an empty string if null
             _clickAction = clickAction;

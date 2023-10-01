@@ -18,18 +18,18 @@ namespace MiningDimension
             switch (subworldIndex) // only PreBoss and EvilOres have subworlds assigned to them as of now.
             {
                 case MiningSubworldID.PreBoss: // preboss ores, copper -> gold tiers
-                    Main.NewText("pre hardmode ores"); // The text here is just for debugging, to make sure the right subworld was entered
+                    //Main.NewText("pre hardmode ores"); // The text here is just for debugging, to make sure the right subworld was entered
                     AddPreHardmodeOres(OreTiers, amount);
                     break;
                 case MiningSubworldID.EvilOres: // also adds demonite + crimtane
-                    Main.NewText("evil ores");
+                    //Main.NewText("evil ores");
                     AddPreHardmodeOres(OreTiers, (int)(amount * 0.95f)); // slightly reducing the frequency or 
                     AddPreWoFOres(OreTiers, amount);
                     break;
                 case MiningSubworldID.Hardmode: // also does cobalt -> titanium (both types)
                     Main.NewText("pre mech ores");
                     AddPreHardmodeOres(OreTiers, (int)(amount * 0.9f));
-                    AddPreWoFOres(OreTiers, amount);
+                    AddPreWoFOres(OreTiers, (int)(amount * 0.95f));
                     AddHardmodeOres(OreTiers, amount);
                     break;
                 case MiningSubworldID.Jungle: // Only does jungle resources, do custom world gen for this number
