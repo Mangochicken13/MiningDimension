@@ -28,14 +28,14 @@ namespace MiningDimension.UI
             header.VAlign = 0.3f;
             panel.Append(header);
 
-            UIButton confirm = new UIButton("Yes", ConfirmEnterSubworld);
+            UIButtonEnterSubworld confirm = new("Yes", ConfirmEnterSubworld);
             confirm.Width.Set(60, 0);
             confirm.Height.Set(40, 0);
             confirm.HAlign = 0.35f;
             confirm.VAlign = 0.55f;
             panel.Append(confirm);
 
-            UIButton deny = new("No", DontEnterSubworld);
+            UIButtonEnterSubworld deny = new("No", DontEnterSubworld);
             deny.Width.Set(60, 0);
             deny.Height.Set(40, 0);
             deny.HAlign = 0.65f;
@@ -63,7 +63,7 @@ namespace MiningDimension.UI
                 ModContent.GetInstance<MiningDimension>().Logger.Info($"Attempted to retain item: {item.HoverName}");
             }
 
-            switch (SubworldToEnter)
+            switch (SubworldToEnter) // SubworldToEnter is assigned when this UI is opened: see ShowConformationUI() in UI/DrillUISystem.cs
             {
                 case MiningSubworldID.PreBoss:
                     SubworldSystem.Enter<PreBossSubworld>();

@@ -32,19 +32,19 @@ namespace MiningDimension.UI
             panel.Append(biomeOreHeader);
 
 
-            UIButton travelButton1 = new UIButton("Descend", PreBossButtonClick);
-            travelButton1.Width.Set(120, 0);
-            travelButton1.Height.Set(40, 0);
-            travelButton1.HAlign = 0.08f;
-            travelButton1.Top.Set(0, 0.1f);
-            panel.Append(travelButton1);
+            UIButtonEnterSubworld travelButtonPreBoss = new UIButtonEnterSubworld("Descend", MiningSubworldID.PreBoss);
+            travelButtonPreBoss.Width.Set(120, 0);
+            travelButtonPreBoss.Height.Set(40, 0);
+            travelButtonPreBoss.HAlign = 0.08f;
+            travelButtonPreBoss.Top.Set(0, 0.1f);
+            panel.Append(travelButtonPreBoss);
 
-            UIButton travelButton2 = new UIButton("Descend", EvilOreButtonClick);
-            travelButton2.Width.Set(120, 0);
-            travelButton2.Height.Set(40, 0);
-            travelButton2.HAlign = 0.08f;
-            travelButton2.Top.Set(0, 0.2f);
-            panel.Append(travelButton2);
+            UIButtonEnterSubworld travelButtonEvilOres = new UIButtonEnterSubworld("Descend", MiningSubworldID.EvilOres);
+            travelButtonEvilOres.Width.Set(120, 0);
+            travelButtonEvilOres.Height.Set(40, 0);
+            travelButtonEvilOres.HAlign = 0.08f;
+            travelButtonEvilOres.Top.Set(0, 0.2f);
+            panel.Append(travelButtonEvilOres);
         }
 
         public override void Update(GameTime gameTime)
@@ -57,24 +57,16 @@ namespace MiningDimension.UI
         }
 
         // TODO: do some sort of check for the drives
-        private void PreBossButtonClick(UIMouseEvent evt, UIElement listeningElement)
-        {
-            ModContent.GetInstance<DrillUISystem>().ShowConfirmationUI(MiningSubworldID.PreBoss);
-        }
-
-        private void EvilOreButtonClick(UIMouseEvent evt, UIElement listeningElement)
-        {
-            ModContent.GetInstance<DrillUISystem>().ShowConfirmationUI(MiningSubworldID.EvilOres);
-        }
     }
 
-    public class UIButton : UIElement
+    public class UIButtonEnterSubworld : UIElement
     {
         // Code borrowed (stolen) from the tMod wiki
         private object _text;
-        private UIElement.MouseEvent _clickAction;
+        private MouseEvent _clickAction;
         private UIPanel _uiPanel;
         private UIText _uiText;
+        public int SubworldToEnter;
 
         public string Text
         {
@@ -82,10 +74,20 @@ namespace MiningDimension.UI
             set => _text = value;
         }
 
-        public UIButton(object text, UIElement.MouseEvent clickAction) : base()
+        // Make sure to use the right constructors for the buttons
+        public UIButtonEnterSubworld(object text, MouseEvent clickAction) : base()
         {
             _text = text?.ToString() ?? string.Empty; // assign text parameter to _text if not null, or an empty string if null
             _clickAction = clickAction;
+            SubworldToEnter = 0;
+        }
+
+        public UIButtonEnterSubworld(object text, int subworldToEnter) : base()
+        {
+            _text = text?.ToString() ?? string.Empty; // assign text parameter to _text if not null, or an empty string if null
+            SubworldToEnter = subworldToEnter;
+
+            _clickAction = (UIMouseEvent evt, UIElement listeningElement) => ModContent.GetInstance<DrillUISystem>().ShowConfirmationUI(SubworldToEnter);
         }
 
         public override void OnInitialize()
