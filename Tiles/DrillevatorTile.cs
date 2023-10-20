@@ -28,6 +28,7 @@ namespace MiningDimension.Tiles
             // tile entity stuff
             TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<DrillevatorEntity>().Hook_AfterPlacement, -1, 0, false);
             TileObjectData.newTile.UsesCustomCanPlace = true;
+            TileObjectData.newTile.StyleHorizontal = false;
 
             TileObjectData.addTile(Type);
 
@@ -41,7 +42,7 @@ namespace MiningDimension.Tiles
 
         public override bool RightClick(int i, int j)
         {
-            // Example mod code. Copied comments denoted with a " - Comment"
+            // Example mod code. Copied comments denoted with a " - [Comment]"
             // Note to self: Check that this works properly
 
             Player player = Main.LocalPlayer;
@@ -87,6 +88,26 @@ namespace MiningDimension.Tiles
             ModContent.GetInstance<DrillUISystem>().ShowSelectionUI();
 
             return true;
+        }
+
+        // Replace this in future, if the tile gets animated properly
+        public override void AnimateTile(ref int frame, ref int frameCounter)
+        {
+            frameCounter++;
+
+            if (frameCounter >= 30)
+            {
+                frameCounter = 0;
+                frame++;
+                if (frame >= 4)
+                    frame = 0;
+            }
+        }
+
+        public override void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset)
+        {
+            int uniqueAnimationFrame = Main.tileFrame[Type];
+            frameYOffset = uniqueAnimationFrame * 36;
         }
     }
 

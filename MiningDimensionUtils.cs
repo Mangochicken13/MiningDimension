@@ -9,6 +9,7 @@ namespace MiningDimension
 {
     public class MiningDimensionUtils
     {
+        #region Ore Gen Utils
         public static void InitializeOreTiers(Dictionary<int, int> OreTiers, int subworldIndex)
         {
             OreTiers.Clear(); // Make sure ores don't generate in subworlds that shouldn't have them
@@ -84,6 +85,8 @@ namespace MiningDimension
         {
             OreTiers.Add(TileID.LunarOre, (int)(amount * 0.2f));
         }
+
+        #endregion
     }
 
     public static class TileUtils // Copied from a wiki, used for the drill (temp sprite) tile entity
